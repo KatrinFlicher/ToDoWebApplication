@@ -21,11 +21,11 @@ public class RegistrateController extends BaseController {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         String srtDAO = config.getInitParameter(Constants.KEY_DAO);
-        if(UserFactory.getUserDAO()==null){
+        if (UserFactory.getUserDAO() == null) {
             UserFactory.setGlobals(srtDAO);
         }
         String strPath = config.getServletContext().getRealPath("/WEB-INF\"");
-        if (FileFactory.getFileManager()==null)
+        if (FileFactory.getFileManager() == null)
             FileFactory.create(strPath);
     }
 
@@ -39,19 +39,18 @@ public class RegistrateController extends BaseController {
             check(login, password, name, email);
             IUserDAO userDAO = UserFactory.getUserDAO();
             User user = new User(login, Role.USER, name, email);
-            if (userDAO.addUser(user, password)){
+            if (userDAO.addUser(user, password)) {
                 HttpSession session = request.getSession();
                 session.setAttribute(Constants.KEY_USER, user);
                 response.sendRedirect(Constants.TASK_CONTR);
-            }
-            else throw new DaoException(Constants.ERROR_USER);
+            } else throw new DaoException(Constants.ERROR_USER);
         } catch (DaoException e) {
-            forwardError(Constants.INDEX_PAGE, e.getMessage(), request,response);
+            forwardError(Constants.INDEX_PAGE, e.getMessage(), request, response);
         }
     }
 
     private void check(String login, String password, String name, String email) throws DaoException {
-        if (login==null || password==null || name == null || email == null)
+        if (login == null || password == null || name == null || email == null)
             throw new DaoException(Constants.ERROR_REG_NULL);
         login = login.trim();
         if (login.equals(Constants.VALUE_EMPTY))

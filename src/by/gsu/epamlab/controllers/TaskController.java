@@ -5,7 +5,6 @@ import by.gsu.epamlab.beans.User;
 import by.gsu.epamlab.constants.Constants;
 import by.gsu.epamlab.exceptions.DaoException;
 import by.gsu.epamlab.factories.TaskFactory;
-import by.gsu.epamlab.impl.TaskDBImpl;
 import by.gsu.epamlab.interfaces.BaseController;
 import by.gsu.epamlab.interfaces.ITaskDAO;
 
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-public class TaskController extends BaseController{
+public class TaskController extends BaseController {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -32,26 +31,25 @@ public class TaskController extends BaseController{
             List<Task> tasks = taskDAO.getTasks(user, section);
             request.setAttribute(Constants.KEY_TASKS, tasks);
             session.setAttribute(Constants.KEY_SECTION, section);
-            forward(Constants.MAIN_PAGE,request,response);
+            forward(Constants.MAIN_PAGE, request, response);
         } catch (DaoException e) {
-            forwardError(Constants.INDEX_PAGE, e.getMessage(),request,response);
+            forwardError(Constants.INDEX_PAGE, e.getMessage(), request, response);
         }
     }
 
-    private String check(String sectionFromForm, String sectionFromServ){
+    private String check(String sectionFromForm, String sectionFromServ) {
         final String SECTION_TODAY = "TODAY";
         //final String SECTION_TODAY = TaskDBImpl.Sections.TODAY.toString().toUpperCase();
-        if (sectionFromForm==null){
-            if(sectionFromServ==null)
-            return SECTION_TODAY;
+        if (sectionFromForm == null) {
+            if (sectionFromServ == null)
+                return SECTION_TODAY;
             else return sectionFromServ;
 
-        }
-        else return sectionFromForm;
+        } else return sectionFromForm;
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request,response);
+        doGet(request, response);
     }
 }

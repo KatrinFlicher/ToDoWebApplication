@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDBImpl implements IUserDAO{
+public class UserDBImpl implements IUserDAO {
     @Override
     public User getUser(String login, String password) throws DaoException {
         Connection cn = null;
@@ -21,23 +21,21 @@ public class UserDBImpl implements IUserDAO{
         ResultSet rs = null;
         try {
             cn = ConnectionManager.createConnection();
-            String sqlQuery = SQLQuery.SELECT_FOUND_USER_BY_LOGIN+SQLQuery.BY_PASSWORD;
+            String sqlQuery = SQLQuery.SELECT_FOUND_USER_BY_LOGIN + SQLQuery.BY_PASSWORD;
             pst = cn.prepareStatement(sqlQuery);
             pst.setString(SQLQuery.LOGIN_INDEX, login);
             pst.setString(SQLQuery.PASSWORD_INDEX, password);
             rs = pst.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 User user = new User(login, Role.valueOf(rs.getString(SQLQuery.ROLE_INDEX)),
                         rs.getString(SQLQuery.NAME_INDEX), rs.getString(SQLQuery.EMAIL_INDEX));
                 System.out.println(user);
                 return user;
-            }
-            else throw new DaoException(Constants.ERROR_LOGIN);
+            } else throw new DaoException(Constants.ERROR_LOGIN);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             ConnectionManager.closeConnection(cn);
             ConnectionManager.closeStatement(pst);
             ConnectionManager.closeResultSet(rs);
@@ -45,11 +43,10 @@ public class UserDBImpl implements IUserDAO{
     }
 
 
-
     @Override
     public boolean addUser(User user, String password) {
-        synchronized (UserDBImpl.class){
-            if (!isFoundLogin(user)){
+        synchronized (UserDBImpl.class) {
+            if (!isFoundLogin(user)) {
                 Connection cn = null;
                 PreparedStatement pst = null;
                 try {
@@ -64,8 +61,7 @@ public class UserDBImpl implements IUserDAO{
                     return true;
                 } catch (SQLException e) {
                     e.printStackTrace();
-                }
-                finally {
+                } finally {
                     ConnectionManager.closeConnection(cn);
                     ConnectionManager.closeStatement(pst);
                 }
@@ -85,13 +81,12 @@ public class UserDBImpl implements IUserDAO{
             pst = cn.prepareStatement(SQLQuery.SELECT_FOUND_USER_BY_LOGIN);
             pst.setString(SQLQuery.LOGIN_INDEX, user.getLogin());
             rs = pst.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 res = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             ConnectionManager.closeConnection(cn);
             ConnectionManager.closeStatement(pst);
             ConnectionManager.closeResultSet(rs);

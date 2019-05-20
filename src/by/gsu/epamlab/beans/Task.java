@@ -14,7 +14,7 @@ public class Task {
     public Task() {
     }
 
-    public Task( String contentTask, Date date) {
+    public Task(String contentTask, Date date) {
         this.contentTask = contentTask;
         this.date = date;
     }
@@ -39,9 +39,13 @@ public class Task {
         this.fileName = fileName;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getIdUser() {
         return idUser;

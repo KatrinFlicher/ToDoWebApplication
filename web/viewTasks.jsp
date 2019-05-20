@@ -6,10 +6,7 @@
     <script type="text/javascript" src="Content/JS/javaScripts.js"></script>
 </head>
 <body>
-
-
     <c:choose>
-
         <c:when test="${not empty tasks}">
             <form action="/edittask" name="formEdit" method="get">
                 <input type="hidden" name="editFunction" value="">
